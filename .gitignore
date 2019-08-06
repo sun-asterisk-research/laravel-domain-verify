@@ -1,0 +1,13 @@
+# Dependencies:
+/vendor
+composer.phar
+composer.lock
+phpunit.xml
+
+# IDE/editors:
+/.idea
+/.vscode
+
+# OS:
+.DS_Store
+Thumbs.db
