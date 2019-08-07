@@ -2,7 +2,6 @@
 /vendor
 composer.phar
 composer.lock
-phpunit.xml
 
 # IDE/editors:
 /.idea
