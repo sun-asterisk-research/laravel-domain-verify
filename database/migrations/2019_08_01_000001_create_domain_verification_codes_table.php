@@ -19,7 +19,7 @@ class CreateDomainVerificationCodesTable extends Migration
             $table->string('site')->index();
             $table->string('token')->index();
             $table->smallInteger('status')->default(10);
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
         });
     }
 
