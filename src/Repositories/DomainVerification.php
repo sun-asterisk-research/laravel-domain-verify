@@ -2,7 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Repositories;
 
-class VerificationCode
+class DomainVerification
 {
     // TODO: Need to implement VerificationCodeInterace
 }

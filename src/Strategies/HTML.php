@@ -7,10 +7,10 @@ class HTML implements StrategyInterface
     /**
      * Verfiy domain ownership via HTML meta tag
      *
-     * @param  string  $domain
+     * @param  string  $url
      * @return bool
      */
-    public function verify(string $domain)
+    public function verify(string $url)
     {
         return false;
     }

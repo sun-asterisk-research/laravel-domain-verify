@@ -7,8 +7,8 @@ interface StrategyInterface
     /**
      * Scan and check domain ownership
      *
-     * @param  string  $domain
+     * @param  string  $url
      * @return bool
      */
-    public function verify(string $domain);
+    public function verify(string $url);
 }

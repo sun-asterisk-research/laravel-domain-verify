@@ -4,9 +4,9 @@ namespace SunAsterisk\DomainVerifier\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VerificationCode extends Model
+class DomainVerification extends Model
 {
-    protected $table = 'domain_verification_codes';
+    protected $table = 'domain_verifications';
 
     protected $fillable = [
         'verifiable_id',

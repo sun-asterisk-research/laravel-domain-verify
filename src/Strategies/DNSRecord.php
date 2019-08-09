@@ -7,10 +7,10 @@ class DNSRecord implements StrategyInterface
     /**
      * Verfiy domain ownership via TXT record
      *
-     * @param  string  $domain
+     * @param  string  $url
      * @return bool
      */
-    public function verify(string $domain)
+    public function verify(string $url)
     {
         return false;
     }
