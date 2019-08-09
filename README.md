@@ -1,17 +1,17 @@
-# domain-verifier
+# sun-asterisk/laravel-domain-verify
 
-Verify domain ownership for the Laravel applications. We provide three ways same Google to verify the domain:
+Verify domain ownership for the Laravel application. We provide three ways to verify the domain (like Google):
 
-- Via domain's DNS record (txt record)
-- Via HTML tag
-- Via Adminstrator's email address. Supported: `admin@domain.example` and `webmaster@domain.example`.
+- [ ] Via domain's DNS record (txt record)
+- [ ] Via HTML tag
+- [ ] Via Adminstrator's email address. Supported: `admin@domain.example` and `webmaster@domain.example`.
 
 ## Installation
 
 First, install Domain Verifier via the Composer package manager:
 
 ```bash
-composer require sun-asterisk/domain-verifier
+composer require sun-asterisk/laravel-domain-verify
 ```
 
 After that, you need to add provider `DomainVerifierServiceProvider` in `config/app.php`.
