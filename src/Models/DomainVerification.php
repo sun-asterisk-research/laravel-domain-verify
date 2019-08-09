@@ -10,7 +10,7 @@ class DomainVerification extends Model
 
     protected $fillable = [
         'verifiable_id',
-        'site',
+        'url',
         'token',
         'status',
     ];
