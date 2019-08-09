@@ -1,6 +1,6 @@
 {
     "name": "sun-asterisk/laravel-domain-verify",
-    "description": "A tool verify domain ownership for Laravel application",
+    "description": "Verify domain ownership for Laravel application",
     "type": "library",
     "license": "MIT",
     "require": {
