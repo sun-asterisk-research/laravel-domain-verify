@@ -2,6 +2,8 @@
 
 namespace SunAsterisk\DomainVerifier\Repositories;
 
+use SunAsterisk\DomainVerifier\Models\DomainVerifiable;
+
 interface DomainVerificationInterface
 {
     /**

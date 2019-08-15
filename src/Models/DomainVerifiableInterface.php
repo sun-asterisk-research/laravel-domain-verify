@@ -2,7 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Models;
 
-interface DomainVerifiable
+interface DomainVerifiableInterface
 {
     //
 }
