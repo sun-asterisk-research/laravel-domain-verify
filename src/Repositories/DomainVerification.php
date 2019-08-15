@@ -2,7 +2,89 @@
 
 namespace SunAsterisk\DomainVerifier\Repositories;
 
-class DomainVerification
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Database\ConnectionInterface;
+use SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Repositories\DomainVerificationInterface;
+
+class DomainVerification implements DomainVerificationInterface
 {
-    // TODO: Need to implement VerificationCodeInterace
+    /** @var \Illuminate\Database\ConnectionInterface */
+    protected $connection;
+
+    /** @var string */
+    protected $table;
+
+    /** @var \Illuminate\Contracts\Hashing\Hasher */
+    protected $hasher;
+
+    /** @var string */
+    protected $hashKey;
+
+    /**
+     * @param  \Illuminate\Database\ConnectionInterface  $connection
+     * @param  string  $table
+     * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
+     * @param  string  $hashKey
+     */
+    public function __construct(ConnectionInterface $connection, string $table, Hasher $hasher, string $hashKey)
+    {
+        $this->connection = $connection;
+        $this->table = $table;
+        $this->hashKey = $hashKey;
+    }
+
+    /** @inheritDoc */
+    public function create(string $url, DomainVerifiableInterface $verifiable)
+    {
+        $token = $this->generateToken();
+
+        $this->deleteExisting($verifiable, $url);
+        $this->getTable()->insert([
+            'verifiable_id' => $verifiable->getKey(),
+            'url' => $url,
+            'token' => $this->hasher->make($token),
+            'created_at' => now(),
+        ]);
+
+        return $token;
+    }
+
+    /** @inheritDoc */
+    public function getTokenFor(string $url, DomainVerifiableInterface $verifiable)
+    {
+        return $this->getTable()
+            ->where('url', URL::normalize($url))
+            ->where('verifiable_id', $verifiable->getKey())
+            ->first();
+    }
+
+    /** @inheritDoc */
+    public function setVerified(string $url, DomainVerifiableInterface $verifiable)
+    {
+        $this->getTable()
+            ->where('verifiable_id', $verifiable->getKey())
+            ->where('url', $url)
+            ->update(['verified_at' => now()]);
+    }
+
+    /**
+     * Get table query
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function getTable()
+    {
+        return $this->connection->table($this->table);
+    }
+
+    /**
+     * Create a new randoom token
+     *
+     * @return string
+     */
+    protected function generateToken()
+    {
+        return hash_hmac('sha256', str_random(48), $this->hashKey);
+    }
 }

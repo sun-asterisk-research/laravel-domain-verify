@@ -18,7 +18,7 @@ class CreateDomainVerificationsTable extends Migration
             $table->string('verifiable_id')->index();
             $table->string('url')->index();
             $table->string('token')->index();
-            $table->smallInteger('status')->default(10);
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
     }

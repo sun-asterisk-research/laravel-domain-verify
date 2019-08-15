@@ -2,25 +2,34 @@
 
 namespace SunAsterisk\DomainVerifier\Repositories;
 
-use SunAsterisk\DomainVerifier\Models\DomainVerifiable;
+use SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;
 
 interface DomainVerificationInterface
 {
     /**
-     * Generate verification code
+     * Create domain verification
      *
      * @param  string  $url
-     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiable  $domainVerifiable
-     * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
+     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface  $domainVerifiable
+     * @return string
      */
-    public function generateToken(string $url, DomainVerifiable $domainVerifiable);
+    public function create(string $url, DomainVerifiableInterface $domainVerifiable);
 
     /**
      * Get existing domain verification for site url
      *
      * @param  string  $url
-     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiable  $domainVerifiable
+     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface  $domainVerifiable
      * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
      */
     public function getTokenFor(string $url, DomainVerifiable $domainVerifiable);
+
+    /**
+     * Set verified domain
+     *
+     * @param  string $url
+     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;  $verifiable
+     * @return void
+     */
+    public function setVerified(string $url, DomainVerifiable $domainVerifiable);
 }
