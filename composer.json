@@ -26,5 +26,12 @@
     "config": {
         "sort-packages": true
     },
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SunAsterisk\\DomainVerifier\\DomainVerifierServiceProvider"
+            ]
+        }
+    }
 }
