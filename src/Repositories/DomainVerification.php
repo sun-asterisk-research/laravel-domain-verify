@@ -4,8 +4,9 @@ namespace SunAsterisk\DomainVerifier\Repositories;
 
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Database\ConnectionInterface;
-use SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;
-use SunAsterisk\DomainVerifier\Repositories\DomainVerificationInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerificationInterface;
+use SunAsterisk\DomainVerifier\Supports\URL;
 
 class DomainVerification implements DomainVerificationInterface
 {
