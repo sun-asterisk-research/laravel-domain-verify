@@ -2,7 +2,9 @@
 
 namespace SunAsterisk\DomainVerifier;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use SunAsterisk\DomainVerifier\Repositories\DomainVerification;
 
 class DomainVerifierServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,21 @@ class DomainVerifierServiceProvider extends ServiceProvider
                 __DIR__.'/../config/domain_verifier.php' => config_path('domain_verifier.php'),
             ], 'config');
         }
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton(DomainVerification::class, function (Application $app) {
+            $connection = $app->make('db')->connection();
+            $table = "domain_verifications";
+            $hasher = $app->make('hash');
+            $hashKey = $app->make('config')->get('key');
+            return new DomainVerification($connection, $table, $hasher, $hashKey);
+        });
     }
 }
