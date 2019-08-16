@@ -2,7 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Repositories;
 
-use SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerifiableInterface;
 
 interface DomainVerificationInterface
 {
@@ -27,8 +27,8 @@ interface DomainVerificationInterface
     /**
      * Set verified domain
      *
-     * @param  string $url
-     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface;  $verifiable
+     * @param  string  $url
+     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerifiableInterface  $verifiable
      * @return void
      */
     public function setVerified(string $url, DomainVerifiable $domainVerifiable);

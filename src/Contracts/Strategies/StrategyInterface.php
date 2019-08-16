@@ -1,6 +1,6 @@
 <?php
 
-namespace SunAsterisk\DomainVerifier\Strategies;
+namespace SunAsterisk\DomainVerifier\Contracts\Strategies;
 
 interface StrategyInterface
 {

@@ -2,6 +2,8 @@
 
 namespace SunAsterisk\DomainVerifier\Strategies;
 
+use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
+
 class DNSRecord implements StrategyInterface
 {
     /**

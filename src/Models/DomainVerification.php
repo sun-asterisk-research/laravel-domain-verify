@@ -12,6 +12,5 @@ class DomainVerification extends Model
         'verifiable_id',
         'url',
         'token',
-        'status',
     ];
 }

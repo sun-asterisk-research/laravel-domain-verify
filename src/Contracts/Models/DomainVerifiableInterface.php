@@ -1,6 +1,6 @@
 <?php
 
-namespace SunAsterisk\DomainVerifier\Models;
+namespace SunAsterisk\DomainVerifier\Contracts\Models;
 
 interface DomainVerifiableInterface
 {
