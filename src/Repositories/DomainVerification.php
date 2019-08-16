@@ -32,6 +32,7 @@ class DomainVerification implements DomainVerificationInterface
     {
         $this->connection = $connection;
         $this->table = $table;
+        $this->hasher = $hasher;
         $this->hashKey = $hashKey;
     }
 
@@ -67,6 +68,21 @@ class DomainVerification implements DomainVerificationInterface
             ->where('verifiable_id', $verifiable->getKey())
             ->where('url', $url)
             ->update(['verified_at' => now()]);
+    }
+
+    /**
+     * Delete existing verifications
+     *
+     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $verifiable
+     * @param  string  $url
+     * @return void
+     */
+    protected function deleteExisting(DomainVerifiableInterface $verifiable, string $url)
+    {
+        $this->getTable()
+            ->where('verifiable_id', $verifiable->getKey())
+            ->where('url', $url)
+            ->delete();
     }
 
     /**
