@@ -39,7 +39,7 @@ class DomainVerifierServiceProvider extends ServiceProvider
             $connection = $app->make('db')->connection();
             $table = "domain_verifications";
             $hasher = $app->make('hash');
-            $hashKey = $app->make('config')->get('key');
+            $hashKey = $app->make('config')->get('app.key');
             return new DomainVerification($connection, $table, $hasher, $hashKey);
         });
     }
