@@ -31,7 +31,10 @@
         "laravel": {
             "providers": [
                 "SunAsterisk\\DomainVerifier\\DomainVerifierServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "DomainVerification": "SunAsterisk\\DomainVerifier\\DomainVerificationFacade::class"
+            }
         }
     }
 }
