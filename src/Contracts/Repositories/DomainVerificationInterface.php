@@ -25,6 +25,14 @@ interface DomainVerificationInterface
     public function getTokenFor(string $url, DomainVerifiableInterface $domainVerifiable);
 
     /**
+     * Get existing domain verification by token
+     *
+     * @param string $token
+     * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
+     */
+    public function getByToken(string $token);
+
+    /**
      * Set verified domain
      *
      * @param  string  $url

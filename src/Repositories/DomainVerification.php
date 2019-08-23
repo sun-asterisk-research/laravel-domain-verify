@@ -62,6 +62,14 @@ class DomainVerification implements DomainVerificationInterface
     }
 
     /** @inheritDoc */
+    public function getByToken(string $token)
+    {
+        return $this->getTable()
+            ->where('token', $token)
+            ->first();
+    }
+
+    /** @inheritDoc */
     public function setVerified(string $url, DomainVerifiableInterface $verifiable)
     {
         $this->getTable()
