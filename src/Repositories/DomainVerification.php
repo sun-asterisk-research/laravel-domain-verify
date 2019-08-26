@@ -78,6 +78,14 @@ class DomainVerification implements DomainVerificationInterface
             ->update(['verified_at' => now()]);
     }
 
+    /** @inheritDoc */
+    public function setVerifiedByToken(string $token)
+    {
+        $this->getTable()
+            ->where('token', $token)
+            ->update(['verified_at' => now()]);
+    }
+
     /**
      * Delete existing verifications
      *

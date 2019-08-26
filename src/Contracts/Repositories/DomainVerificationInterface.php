@@ -40,4 +40,12 @@ interface DomainVerificationInterface
      * @return void
      */
     public function setVerified(string $url, DomainVerifiableInterface $domainVerifiable);
+
+    /**
+     * Set verified domain by token
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function setVerifiedByToken(string $token);
 }
