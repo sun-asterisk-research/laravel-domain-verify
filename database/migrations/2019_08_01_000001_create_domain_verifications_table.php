@@ -18,6 +18,8 @@ class CreateDomainVerificationsTable extends Migration
             $table->string('verifiable_id')->index();
             $table->string('url')->index();
             $table->string('token')->index();
+            $table->enum('status');
+            $table->timestamp('email_sent_at')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
