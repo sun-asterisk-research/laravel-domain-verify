@@ -42,14 +42,23 @@ class DomainVerification implements DomainVerificationInterface
         $token = $this->generateToken();
 
         $this->deleteExisting($verifiable, $url);
-        $this->getTable()->insert([
+        return $this->getTable()->insert([
             'verifiable_id' => $verifiable->getKey(),
             'url' => $url,
             'token' => $this->hasher->make($token),
             'created_at' => now(),
         ]);
+    }
 
-        return $token;
+    public function firstOrCreate(string $url, DomainVerifiableInterface $verifiable)
+    {
+        $record = $this->getExisting($url, $verifiable);
+
+        if ($record !== null) {
+            return $record;
+        } else {
+            return $this->create($url, $verifiable);
+        }
     }
 
     /** @inheritDoc */
@@ -76,6 +85,8 @@ class DomainVerification implements DomainVerificationInterface
             ->where('verifiable_id', $verifiable->getKey())
             ->where('url', $url)
             ->update(['verified_at' => now()]);
+
+        return $this->getExisting();
     }
 
     /** @inheritDoc */
@@ -99,6 +110,13 @@ class DomainVerification implements DomainVerificationInterface
             ->where('verifiable_id', $verifiable->getKey())
             ->where('url', $url)
             ->delete();
+    }
+
+    protected function getExisting(string $url, DomainVerifiableInterface $verifiable) {
+        return $this->getTable()
+            ->where('verifiable_id', $verifiable->getKey())
+            ->where('url', $url)
+            ->first();
     }
 
     /**

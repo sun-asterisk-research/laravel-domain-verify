@@ -5,8 +5,9 @@ namespace SunAsterisk\DomainVerifier\Strategies;
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
+use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
-class HTMLFile implements StrategyInterface
+class HTMLFile extends BaseStrategy
 {
     /**
      * Verify domain ownership via HTML meta tag
@@ -17,18 +18,21 @@ class HTMLFile implements StrategyInterface
      */
     public function verify(string $url, DomainVerifiableInterface $domainVerifiable)
     {
-        $domainToken = $this->getToken($url);
-        if ($domainToken == null) return false;
         $verificationToken = DomainVerificationFacade::getTokenFor($url, $domainVerifiable)->token;
-        $n = strlen($verificationToken);
-        $domainToken = substr($domainToken, 0, $n);
-        return $domainToken == $verificationToken;
+        $domainToken = substr($this->getToken($url), 0, strlen($verificationToken));
+        $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+
+        if ($domainToken == $verificationToken) {
+            $record = DomainVerificationFacade::setVerified($url, $domainVerifiable);
+        }
+
+        return new VerifyResult($domainVerifiable, $url, $record);
     }
 
     protected function getToken($url)
     {
-        $verificationName = config("domain_verifier.verification_name");
-        $urlFile = $url.'./'.$verificationName.'.html';
+        $verificationName = config('domain_verifier.verification_name');
+        $urlFile = $url . './' . $verificationName . '.html';
         $domainToken = @file_get_contents($urlFile);
         return $domainToken;
     }

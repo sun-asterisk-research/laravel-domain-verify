@@ -6,8 +6,9 @@ use Mockery as m;
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
+use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
-class HTML implements StrategyInterface
+class HTML extends BaseStrategy
 {
     /**
      * Verify domain ownership via HTML meta tag
@@ -20,9 +21,13 @@ class HTML implements StrategyInterface
     {
         $metaTags = $this->getMetaTags($url);
         $domainToken = $this->getToken($metaTags);
-        $token = DomainVerificationFacade::getTokenFor($url, $domainVerifiable)->token;
+        $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
 
-        return $token === $domainToken;
+        if ($record->token === $domainToken) {
+            $record = DomainVerificationFacade::setVerified($url, $domainVerifiable);
+        }
+
+        return new VerifyResult($domainVerifiable, $url, $record);
     }
 
     protected function getMetaTags($url)
