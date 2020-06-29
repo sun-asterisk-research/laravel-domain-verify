@@ -3,6 +3,7 @@
 namespace SunAsterisk\DomainVerifier\Contracts\Strategies;
 
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
 interface StrategyInterface
 {
@@ -13,5 +14,6 @@ interface StrategyInterface
      * @param DomainVerifiableInterface $domainVerifiable
      * @return bool
      */
-    public function verify(string $url, DomainVerifiableInterface $domainVerifiable);
+    public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult;
+    public function getToken(string $url, DomainVerifiableInterface $domainVerifiable): string;
 }
