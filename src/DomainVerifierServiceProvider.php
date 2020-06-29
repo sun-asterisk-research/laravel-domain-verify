@@ -5,6 +5,7 @@ namespace SunAsterisk\DomainVerifier;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use SunAsterisk\DomainVerifier\Repositories\DomainVerification;
+use SunAsterisk\DomainVerifier\Factories\VerifierFactory;
 
 class DomainVerifierServiceProvider extends ServiceProvider
 {
@@ -37,10 +38,14 @@ class DomainVerifierServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DomainVerification::class, function (Application $app) {
             $connection = $app->make('db')->connection();
-            $table = "domain_verifications";
+            $table = 'domain_verifications';
             $hasher = $app->make('hash');
             $hashKey = $app->make('config')->get('app.key');
             return new DomainVerification($connection, $table, $hasher, $hashKey);
+        });
+
+        $this->app->singleton(VerifierFactory::class, function () {
+            return new VerifierFactory();
         });
     }
 }

@@ -11,7 +11,6 @@ class VerifyResult
     protected $url;
     protected $record;
 
-
     public function __construct(DomainVerifiableInterface $domainVerifiable, string $url, DomainVerification $record)
     {
         $this->domainVerifiable = $domainVerifiable;
@@ -21,11 +20,11 @@ class VerifyResult
 
     public function isVerified()
     {
-        return $record->status === 'verified';
+        return $this->record->status === 'verified';
     }
 
     public function getStatus()
     {
-        return $record->status;
+        return $this->record->status;
     }
 }

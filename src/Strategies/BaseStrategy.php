@@ -3,6 +3,7 @@
 namespace SunAsterisk\DomainVerifier\Strategies;
 
 use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
 

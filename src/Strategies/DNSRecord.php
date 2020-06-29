@@ -3,11 +3,13 @@
 namespace SunAsterisk\DomainVerifier\Strategies;
 
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Models\DomainVerification;
 use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
+use SunAsterisk\DomainVerifier\Results\VerifyResult;
 use Spatie\Dns\Dns;
 
-class DNSRecord implements StrategyInterface
+class DNSRecord extends BaseStrategy
 {
     /**
      * Verfiy domain ownership via TXT record
@@ -20,9 +22,13 @@ class DNSRecord implements StrategyInterface
     {
         $txtRecords = $this->getTxtRecords($url);
         $tokenRecords = $this->getTokenRecords($txtRecords);
-        $verificationToken = DomainVerificationFacade::getTokenFor($url, $domainVerifiable)->token;
+        $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
 
-        return in_array($verificationToken, $tokenRecords);
+        if (in_array($record->token, $tokenRecords)) {
+            $record->setVerified();
+        }
+
+        return new VerifyResult($domainVerifiable, $url, $record);
     }
 
     protected function getTxtRecords($url)
@@ -36,7 +42,7 @@ class DNSRecord implements StrategyInterface
     protected function getTokenRecords($txtRecords)
     {
         $verificationName = config('domain_verifier.verification_name');
-        $tokenRecords = array();
+        $tokenRecords = [];
 
         foreach ($txtRecords as $item) {
             if (strpos($item, $verificationName)) {
