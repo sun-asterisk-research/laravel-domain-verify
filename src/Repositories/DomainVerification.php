@@ -7,6 +7,7 @@ use Illuminate\Database\ConnectionInterface;
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerificationInterface;
 use SunAsterisk\DomainVerifier\Supports\URL;
+use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
 
 class DomainVerification implements DomainVerificationInterface
 {
@@ -36,20 +37,18 @@ class DomainVerification implements DomainVerificationInterface
         $this->hashKey = $hashKey;
     }
 
-    /** @inheritDoc */
-    public function create(string $url, DomainVerifiableInterface $verifiable)
+    public function firstOrCreate(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
     {
-        $token = $this->generateToken();
-
-        $this->deleteExisting($verifiable, $url);
-        $this->getTable()->insert([
-            'verifiable_id' => $verifiable->getKey(),
-            'url' => $url,
-            'token' => $this->hasher->make($token),
-            'created_at' => now(),
-        ]);
-
-        return $token;
+        return DomainVerificationModel::firstOrCreate(
+            [
+                'verifiable_id' => $verifiable->getKey(),
+                'url' => $url,
+            ],
+            [
+                'status' => 'pending',
+                'token' => $this->hasher->make($this->generateToken()),
+            ]
+        );
     }
 
     /** @inheritDoc */
@@ -70,12 +69,18 @@ class DomainVerification implements DomainVerificationInterface
     }
 
     /** @inheritDoc */
-    public function setVerified(string $url, DomainVerifiableInterface $verifiable)
+    public function setVerified(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
     {
-        $this->getTable()
-            ->where('verifiable_id', $verifiable->getKey())
+        $record = DomainVerificationModel::where('verifiable_id', $verifiable->getKey())
             ->where('url', $url)
-            ->update(['verified_at' => now()]);
+            ->first();
+
+        $record->update([
+                'verified_at' => now(),
+                'status' => 'verified',
+            ]);
+
+        return $record;
     }
 
     /** @inheritDoc */

@@ -3,17 +3,18 @@
 namespace SunAsterisk\DomainVerifier\Contracts\Repositories;
 
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
 
 interface DomainVerificationInterface
 {
     /**
-     * Create domain verification
+     * Get an existing or create a new domain verification record
      *
      * @param  string  $url
      * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $domainVerifiable
-     * @return string
+     * @return DomainVerificationInterface
      */
-    public function create(string $url, DomainVerifiableInterface $domainVerifiable);
+    public function firstOrCreate(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerificationModel;
 
     /**
      * Get existing domain verification for site url
@@ -37,9 +38,9 @@ interface DomainVerificationInterface
      *
      * @param  string  $url
      * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $verifiable
-     * @return void
+     * @return DomainVerificationModel
      */
-    public function setVerified(string $url, DomainVerifiableInterface $domainVerifiable);
+    public function setVerified(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerificationModel;
 
     /**
      * Set verified domain by token
