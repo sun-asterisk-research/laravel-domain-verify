@@ -13,9 +13,9 @@ class HTMLFile extends BaseStrategy
     /**
      * Verify domain ownership via HTML meta tag
      *
-     * @param string $url
-     * @param DomainVerifiableInterface $domainVerifiable
-     * @return bool
+     * @param  string  $url
+     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @return VerifyResult
      */
     public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
     {
@@ -25,6 +25,8 @@ class HTMLFile extends BaseStrategy
 
         if ($domainToken === $verificationToken) {
             $record->setVerified();
+        } else {
+            $record->setNotVerified();
         }
 
         return new VerifyResult($domainVerifiable, $url, $record);

@@ -8,23 +8,25 @@ use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
-class HTML extends BaseStrategy
+class HTMLMeta extends BaseStrategy
 {
     /**
      * Verify domain ownership via HTML meta tag
      *
-     * @param string $url
-     * @param DomainVerifiableInterface $domainVerifiable
-     * @return bool
+     * @param  string  $url
+     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @return VerifyResult
      */
-    public function verify(string $url, DomainVerifiableInterface $domainVerifiable)
+    public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
     {
         $metaTags = $this->getMetaTags($url);
-        $domainToken = $this->getToken($metaTags);
+        $domainToken = $this->getMetaTagToken($metaTags);
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
 
         if ($record->token === $domainToken) {
             $record->setVerified();
+        } else {
+            $record->setNotVerified();
         }
 
         return new VerifyResult($domainVerifiable, $url, $record);
@@ -35,9 +37,8 @@ class HTML extends BaseStrategy
         return get_meta_tags($url);
     }
 
-    protected function getToken(array $metaTags)
+    protected function getMetaTagToken(array $metaTags)
     {
-        // do somethings
         $verificationName = config('domain_verifier.verification_name');
         if (!isset($metaTags[$verificationName])) {
             return '';

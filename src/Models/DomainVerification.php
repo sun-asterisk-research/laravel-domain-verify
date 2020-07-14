@@ -31,4 +31,19 @@ class DomainVerification extends Model
 
         return $this;
     }
+
+    /**
+     * Unverify domain
+     *
+     * @return DomainVerification
+     */
+    public function setNotVerified()
+    {
+        $this->update([
+            'verified_at' => null,
+            'status' => 'pending',
+        ]);
+
+        return $this;
+    }
 }

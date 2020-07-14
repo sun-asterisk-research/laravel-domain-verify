@@ -4,7 +4,7 @@ namespace SunAsterisk\DomainVerifier\Factories;
 
 use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\Strategies\DNSRecord;
-use SunAsterisk\DomainVerifier\Strategies\HTML;
+use SunAsterisk\DomainVerifier\Strategies\HTMLMeta;
 use SunAsterisk\DomainVerifier\Strategies\HTMLFile;
 use SunAsterisk\DomainVerifier\Strategies\Mail;
 
@@ -20,7 +20,7 @@ class VerifierFactory
                 return new HTMLFile();
                 break;
             case 'html-meta':
-                return new HTML();
+                return new HTMLMeta();
                 break;
             case 'mail':
                 return new Mail();
