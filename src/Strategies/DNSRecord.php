@@ -12,44 +12,43 @@ use Spatie\Dns\Dns;
 class DNSRecord extends BaseStrategy
 {
     /**
-     * Verfiy domain ownership via TXT record
+     * Verify domain ownership via TXT record
      *
      * @param string $url
      * @param DomainVerifiableInterface $domainVerifiable
-     * @return bool
+     * @return VerifyResult
      */
-    public function verify(string $url, DomainVerifiableInterface $domainVerifiable)
+    public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
     {
-        $txtRecords = $this->getTxtRecords($url);
-        $tokenRecords = $this->getTokenRecords($txtRecords);
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
 
-        if (in_array($record->token, $tokenRecords)) {
+        if ($this->tokenExists($url, $record->token)) {
             $record->setVerified();
+        } else {
+            $record->setNotVerified();
         }
 
         return new VerifyResult($domainVerifiable, $url, $record);
     }
 
-    protected function getTxtRecords($url)
+    protected function getTxtRecordValues($url)
     {
         $dns = new Dns($url);
         $txtRecords = $dns->getRecords('TXT');
 
-        return explode(PHP_EOL, $txtRecords);
-    }
-
-    protected function getTokenRecords($txtRecords)
-    {
-        $verificationName = config('domain_verifier.verification_name');
-        $tokenRecords = [];
-
-        foreach ($txtRecords as $item) {
-            if (strpos($item, $verificationName)) {
-                array_push($tokenRecords, substr($item, strpos($item, '=') + 2, -1));
-            }
+        if (preg_match_all('/"([^"]+)"/', $txtRecords, $m)) {
+            return $m[1];
         }
 
-        return $tokenRecords;
+        return [];
+    }
+
+    protected function tokenExists($url, $token)
+    {
+        $verificationName = config('domain_verifier.verification_name');
+        $txtRecordValues = $this->getTxtRecordValues($url);
+        $verificationValue = "$verificationName=$token";
+
+        return in_array($verificationValue, $txtRecordValues);
     }
 }
