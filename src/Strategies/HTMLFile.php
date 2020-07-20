@@ -32,11 +32,16 @@ class HTMLFile extends BaseStrategy
         return new VerifyResult($domainVerifiable, $url, $record);
     }
 
+    protected function fileGetContents($url)
+    {
+        return file_get_contents($url);
+    }
+
     protected function getHtmlFileToken($url)
     {
         $verificationName = config('domain_verifier.verification_name');
         $urlFile = $url . '/' . $verificationName . '.html';
-        $domainToken = @file_get_contents($urlFile);
+        $domainToken = $this->fileGetContents($urlFile);
         return $domainToken;
     }
 

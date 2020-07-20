@@ -24,7 +24,6 @@ class URL
      */
     public static function getDomainName(string $url)
     {
-        $matched = preg_match('/(http[s]?:\/\/)(.+)/', $url, $data);
-        return $matched ? trim($data[2]) : '';
+        return parse_url($url)['host'];
     }
 }

@@ -123,6 +123,6 @@ class DomainVerification implements DomainVerificationInterface
      */
     protected function generateToken()
     {
-        return hash_hmac('sha256', str_random(48), $this->hashKey);
+        return \Str::random(48);
     }
 }
