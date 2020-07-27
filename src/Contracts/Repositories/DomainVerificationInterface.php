@@ -11,8 +11,8 @@ interface DomainVerificationInterface
      * Get an existing or create a new domain verification record
      *
      * @param  string  $url
-     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $domainVerifiable
-     * @return DomainVerificationInterface
+     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @return DomainVerificationModel
      */
     public function firstOrCreate(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerificationModel;
 
@@ -20,24 +20,24 @@ interface DomainVerificationInterface
      * Get existing domain verification for site url
      *
      * @param  string  $url
-     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $domainVerifiable
-     * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
+     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @return DomainVerificationModel
      */
     public function getTokenFor(string $url, DomainVerifiableInterface $domainVerifiable);
 
     /**
-     * Get existing domain verification by token
+     * Get existing domain verification record by activation token
      *
-     * @param string $token
-     * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
+     * @param  string  $activationToken
+     * @return DomainVerificationModel
      */
-    public function getByToken(string $token);
+    public function findByActivationToken(string $activationToken): ?DomainVerificationModel;
 
     /**
      * Set verified domain
      *
      * @param  string  $url
-     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $verifiable
+     * @param  DomainVerifiableInterface  $verifiable
      * @return DomainVerificationModel
      */
     public function setVerified(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerificationModel;

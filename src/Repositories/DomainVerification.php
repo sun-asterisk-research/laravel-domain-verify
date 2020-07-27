@@ -46,7 +46,8 @@ class DomainVerification implements DomainVerificationInterface
             ],
             [
                 'status' => 'pending',
-                'token' => $this->hasher->make($this->generateToken()),
+                'token' => $this->generateToken(),
+                'activation_token' => $this->generateToken(),
             ]
         );
     }
@@ -61,10 +62,9 @@ class DomainVerification implements DomainVerificationInterface
     }
 
     /** @inheritDoc */
-    public function getByToken(string $token)
+    public function findByActivationToken(string $activationToken): ?DomainVerificationModel
     {
-        return $this->getTable()
-            ->where('token', $token)
+        return DomainVerificationModel::where('activation_token', $activationToken)
             ->first();
     }
 

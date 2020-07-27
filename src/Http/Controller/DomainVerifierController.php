@@ -2,20 +2,38 @@
 
 namespace SunAsterisk\DomainVerifier\Http\Controller;
 
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
+use SunAsterisk\DomainVerifier\VerifierFactoryFacade as VerifierFactory;
 
-class DomainVerifierController extends BaseController
+class DomainVerifierController extends Controller
 {
     public function verify($token)
     {
-        DomainVerificationFacade::setVerifiedByToken($token);
-        $route =  config('domain_verifier.activation_route');
-        return route($route);
+        $verifier = VerifierFactory::strategy('sending-mail');
+        try {
+            $result = $verifier->verifyByActivationToken($token);
+
+            if ($result->isVerified()) {
+                $route = config('domain_verifier.route.verification_succeeded');
+                return redirect()->route($route);
+            } else {
+                $route = config('domain_verifier.route.verification_failed');
+                return redirect()->route($route);
+            }
+        } catch (\Exception $exception) {
+            $route = config('domain_verifier.route.verification_failed');
+            return redirect()->route($route);
+        }
     }
 
-    public function activated()
+    public function verificationSucceeded()
     {
-        return view('domain-verifier::activated');
+        return view('laravel-domain-verify::verification_succeeded');
+    }
+
+    public function verificationFailed()
+    {
+        return view('laravel-domain-verify::verification_failed');
     }
 }
