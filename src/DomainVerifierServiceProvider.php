@@ -27,6 +27,9 @@ class DomainVerifierServiceProvider extends ServiceProvider
                 __DIR__.'/../config/domain_verifier.php' => config_path('domain_verifier.php'),
             ], 'config');
         }
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-domain-verify');
+        $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
     }
 
     /**

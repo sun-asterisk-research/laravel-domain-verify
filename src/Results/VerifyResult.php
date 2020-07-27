@@ -11,7 +11,7 @@ class VerifyResult
     protected $url;
     protected $record;
 
-    public function __construct(DomainVerifiableInterface $domainVerifiable, string $url, DomainVerification $record)
+    public function __construct(?DomainVerifiableInterface $domainVerifiable, string $url, DomainVerification $record)
     {
         $this->domainVerifiable = $domainVerifiable;
         $this->url = $url;

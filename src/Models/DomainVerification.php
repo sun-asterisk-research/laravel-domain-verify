@@ -13,6 +13,7 @@ class DomainVerification extends Model
         'url',
         'status',
         'token',
+        'activation_token',
         'email_sent_at',
         'verified_at',
     ];

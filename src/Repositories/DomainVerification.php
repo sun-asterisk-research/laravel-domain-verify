@@ -8,6 +8,7 @@ use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerificationInterface;
 use SunAsterisk\DomainVerifier\Supports\URL;
 use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
+use Illuminate\Support\Str;
 
 class DomainVerification implements DomainVerificationInterface
 {
@@ -46,7 +47,8 @@ class DomainVerification implements DomainVerificationInterface
             ],
             [
                 'status' => 'pending',
-                'token' => $this->hasher->make($this->generateToken()),
+                'token' => $this->generateToken(),
+                'activation_token' => $this->generateToken(),
             ]
         );
     }
@@ -61,10 +63,9 @@ class DomainVerification implements DomainVerificationInterface
     }
 
     /** @inheritDoc */
-    public function getByToken(string $token)
+    public function findByActivationToken(string $activationToken): ?DomainVerificationModel
     {
-        return $this->getTable()
-            ->where('token', $token)
+        return DomainVerificationModel::where('activation_token', $activationToken)
             ->first();
     }
 
@@ -123,6 +124,6 @@ class DomainVerification implements DomainVerificationInterface
      */
     protected function generateToken()
     {
-        return \Str::random(48);
+        return Str::random(48);
     }
 }

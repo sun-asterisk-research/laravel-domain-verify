@@ -36,8 +36,8 @@
                 "SunAsterisk\\DomainVerifier\\DomainVerifierServiceProvider"
             ],
             "aliases": {
-                "DomainVerification": "SunAsterisk\\DomainVerifier\\DomainVerificationFacade::class",
-                "VerifierFactory": "SunAsterisk\\DomainVerifier\\VerifierFactoryFacade::class"
+                "DomainVerification": "SunAsterisk\\DomainVerifier\\DomainVerificationFacade",
+                "VerifierFactory": "SunAsterisk\\DomainVerifier\\VerifierFactoryFacade"
             }
         }
     }
