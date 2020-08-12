@@ -8,13 +8,13 @@ use SunAsterisk\DomainVerifier\Models\DomainVerification;
 
 class ActivationMail extends Mailable
 {
-    public DomainVerifiableInterface $verifiable;
+    public $verifiable;
 
-    public DomainVerification $verification;
+    public $verification;
 
-    public string $domainName;
+    public $domainName;
 
-    public string $activationToken;
+    public $activationToken;
 
     public function __construct(
         DomainVerifiableInterface $verifiable,
@@ -37,8 +37,9 @@ class ActivationMail extends Mailable
         $mailCc = 'webmaster@' . $this->domainName;
         $mailSubject = config('domain_verifier.mail.subject');
         $mailView = config('domain_verifier.mail.view');
+        $baseUrl = config('domain_verifier.base_url');
 
-        $activationUrl = request()->root() . '/domain-verify/' . $this->activationToken;
+        $activationUrl = $baseUrl . '/domain-verify/activate/' . $this->activationToken;
 
         return $this
             ->from($mailFrom)
@@ -51,6 +52,7 @@ class ActivationMail extends Mailable
                 'domainName' => $this->domainName,
                 'activationToken' => $this->activationToken,
                 'activationUrl' => $activationUrl,
+                'verifiable' => $this->verifiable,
             ]);
     }
 }

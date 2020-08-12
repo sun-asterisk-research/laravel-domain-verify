@@ -24,6 +24,12 @@ class URL
      */
     public static function getDomainName(string $url)
     {
-        return parse_url($url)['host'];
+        $parsedUrl = parse_url($url);
+
+        if (array_key_exists('host', $parsedUrl)) {
+            return $parsedUrl['host'];
+        }
+
+        throw new \InvalidArgumentException('Provided URL\'s domain name cannot be parsed.');
     }
 }

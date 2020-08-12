@@ -31,7 +31,8 @@ class SendingMail extends BaseStrategy
 
         if ($record) {
             $record->setVerified();
-            return new VerifyResult(null, $record->url, $record);
+            $domainVerifiable = $record->verifiable;
+            return new VerifyResult($domainVerifiable, $record->url, $record);
         }
 
         throw new \Exception('Activation token doesn\'t match to any verifiable object.');
@@ -41,6 +42,7 @@ class SendingMail extends BaseStrategy
     {
         $domainName = URL::getDomainName($url);
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+        $domainVerifiable = $record->verifiable;
 
         Mail::send(new ActivationMail($domainVerifiable, $record, $url, $domainName, $record->activation_token));
     }

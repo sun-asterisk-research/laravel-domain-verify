@@ -15,7 +15,8 @@ class CreateDomainVerificationsTable extends Migration
     {
         Schema::create('domain_verifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('verifiable_id')->index();
+            $table->string('verifiable_type')->index();
+            $table->integer('verifiable_id')->index();
             $table->string('url')->index();
             $table->string('token')->index();
             $table->string('activation_token')->index();

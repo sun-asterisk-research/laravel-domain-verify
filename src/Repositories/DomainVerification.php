@@ -42,6 +42,7 @@ class DomainVerification implements DomainVerificationInterface
     {
         return DomainVerificationModel::firstOrCreate(
             [
+                'verifiable_type' => get_class($verifiable),
                 'verifiable_id' => $verifiable->getKey(),
                 'url' => $url,
             ],
@@ -54,67 +55,10 @@ class DomainVerification implements DomainVerificationInterface
     }
 
     /** @inheritDoc */
-    public function getTokenFor(string $url, DomainVerifiableInterface $verifiable)
-    {
-        return $this->getTable()
-            ->where('url', URL::normalize($url))
-            ->where('verifiable_id', $verifiable->getKey())
-            ->first();
-    }
-
-    /** @inheritDoc */
     public function findByActivationToken(string $activationToken): ?DomainVerificationModel
     {
         return DomainVerificationModel::where('activation_token', $activationToken)
             ->first();
-    }
-
-    /** @inheritDoc */
-    public function setVerified(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
-    {
-        $record = DomainVerificationModel::where('verifiable_id', $verifiable->getKey())
-            ->where('url', $url)
-            ->first();
-
-        $record->update([
-                'verified_at' => now(),
-                'status' => 'verified',
-            ]);
-
-        return $record;
-    }
-
-    /** @inheritDoc */
-    public function setVerifiedByToken(string $token)
-    {
-        $this->getTable()
-            ->where('token', $token)
-            ->update(['verified_at' => now()]);
-    }
-
-    /**
-     * Delete existing verifications
-     *
-     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $verifiable
-     * @param  string  $url
-     * @return void
-     */
-    protected function deleteExisting(DomainVerifiableInterface $verifiable, string $url)
-    {
-        $this->getTable()
-            ->where('verifiable_id', $verifiable->getKey())
-            ->where('url', $url)
-            ->delete();
-    }
-
-    /**
-     * Get table query
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    protected function getTable()
-    {
-        return $this->connection->table($this->table);
     }
 
     /**
@@ -124,6 +68,6 @@ class DomainVerification implements DomainVerificationInterface
      */
     protected function generateToken()
     {
-        return Str::random(48);
+        return hash_hmac('sha256', Str::random(48), $this->hashKey);
     }
 }

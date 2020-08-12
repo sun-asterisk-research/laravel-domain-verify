@@ -32,6 +32,15 @@ class HTMLFile extends BaseStrategy
         return new VerifyResult($domainVerifiable, $url, $record);
     }
 
+    public function getHtmlFileUrl(string $url, DomainVerifiableInterface $domainVerifiable): string
+    {
+        $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+
+        $baseUrl = config('domain_verifier.base_url');
+        $htmlFileUrl = $baseUrl . '/domain-verify/html-file/' . $record->id;
+        return $htmlFileUrl;
+    }
+
     protected function fileGetContents($url)
     {
         return file_get_contents($url);
@@ -44,5 +53,4 @@ class HTMLFile extends BaseStrategy
         $domainToken = $this->fileGetContents($urlFile);
         return $domainToken;
     }
-
 }

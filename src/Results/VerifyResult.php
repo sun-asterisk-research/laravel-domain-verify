@@ -18,6 +18,16 @@ class VerifyResult
         $this->record = $record;
     }
 
+    public function getVerifiable()
+    {
+        return $this->domainVerifiable;
+    }
+
+    public function getRecord()
+    {
+        return $this->record;
+    }
+
     public function isVerified()
     {
         return $this->record->status === 'verified';
