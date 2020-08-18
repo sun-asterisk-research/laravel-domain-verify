@@ -157,7 +157,7 @@
     </head>
     <body class="bg-gray-300 flex items-center justify-center w-screen h-screen">
         <main class="bg-white rounded max-w-screen-xl shadow m-2">
-	    <h3 class="font-bold text-red-800 p-6">Verification failed because invalid or expired activation token.</h3>
+            <h3 class="font-bold text-red-800 p-6">Verification failed because invalid or expired activation token.</h3>
         </main>
     </body>
 </html>

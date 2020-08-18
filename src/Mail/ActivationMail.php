@@ -16,25 +16,28 @@ class ActivationMail extends Mailable
 
     public $activationToken;
 
+    public $emailTo;
+
     public function __construct(
         DomainVerifiableInterface $verifiable,
         DomainVerification $verification,
         string $url,
         string $domainName,
-        string $activationToken
+        string $activationToken,
+        string $emailTo
     ) {
         $this->verifiable = $verifiable;
         $this->verification = $verification;
         $this->url = $url;
         $this->domainName = $domainName;
         $this->activationToken = $activationToken;
+        $this->emailTo = $emailTo;
     }
 
     public function build()
     {
         $mailFrom = config('domain_verifier.mail.from');
-        $mailTo = 'admin@' . $this->domainName;
-        $mailCc = 'webmaster@' . $this->domainName;
+        $mailTo = $this->emailTo . '@' . $this->domainName;
         $mailSubject = config('domain_verifier.mail.subject');
         $mailView = config('domain_verifier.mail.view');
         $baseUrl = config('domain_verifier.base_url');
@@ -44,7 +47,6 @@ class ActivationMail extends Mailable
         return $this
             ->from($mailFrom)
             ->to($mailTo)
-            ->cc($mailCc)
             ->subject($mailSubject)
             ->view($mailView)
             ->with([
