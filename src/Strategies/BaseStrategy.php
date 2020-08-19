@@ -6,6 +6,8 @@ use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
+use SunAsterisk\DomainVerifier\Models\DomainVerification;
+use SunAsterisk\DomainVerifier\Supports\URL;
 
 abstract class BaseStrategy implements StrategyInterface
 {
@@ -19,6 +21,17 @@ abstract class BaseStrategy implements StrategyInterface
      * @return string
      */
     public function getToken(string $url, DomainVerifiableInterface $domainVerifiable): string
+    {
+        $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+        return $record->token;
+    }
+
+    public function getDomainName(string $url): string
+    {
+        return URL::getDomainName($url);
+    }
+
+    public function getRecord(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerification
     {
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
         return $record->token;

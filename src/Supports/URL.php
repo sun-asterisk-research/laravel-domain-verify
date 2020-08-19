@@ -24,7 +24,12 @@ class URL
      */
     public static function getDomainName(string $url)
     {
-        $matched = preg_match('/(http[s]?:\/\/)(.+)/', $url, $data);
-        return $matched ? trim($data[2]) : '';
+        $parsedUrl = parse_url($url);
+
+        if (array_key_exists('host', $parsedUrl)) {
+            return $parsedUrl['host'];
+        }
+
+        throw new \InvalidArgumentException('Provided URL\'s domain name cannot be parsed.');
     }
 }

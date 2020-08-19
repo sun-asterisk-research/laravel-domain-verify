@@ -3,19 +3,31 @@
 namespace SunAsterisk\DomainVerifier\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 
 class DomainVerification extends Model
 {
     protected $table = 'domain_verifications';
 
     protected $fillable = [
+        'verifiable_type',
         'verifiable_id',
         'url',
         'status',
         'token',
+        'activation_token',
         'email_sent_at',
         'verified_at',
     ];
+
+    /**
+     * Get the owning verifiable model
+     *
+     */
+    public function verifiable()
+    {
+        return $this->morphTo();
+    }
 
     /**
      * Set verified domain

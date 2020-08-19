@@ -1,8 +1,11 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-</head>
-<body>
-<a href="{{config('app.url').'/domain-verify/'.$token}}">{{config('app.url').'/domain-verify/'.$token}}</a>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        Open the link below to confirm your ownership on domain {{ $domainName }}.
+        <br>
+        <a href="{{ $activationUrl }}">{{ $activationUrl }}</a>
+    </body>
 </html>

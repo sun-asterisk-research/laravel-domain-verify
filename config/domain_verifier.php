@@ -1,14 +1,23 @@
 <?php
 
 return [
-    // Used to find token:
     'verification_name' => env('DOMAIN_VERIFICATION_NAME', 'domain-verification'),
+    'base_url' => env('DOMAIN_VERIFICATION_BASE_URL', 'http://localhost'),
 
     'mail' => [
-        'view' => env('DOMAIN_VERIFY_MAIL_VIEW', 'domain-verifier::mail'),
-        'subject' => env('DOMAIN_VERIFY_MAIL_SUBJECT', 'Domain Verify Acttivation'),
-        'data' => env('DOMAIN_VERIFY_MAIL_DATA'),
+        'from' => env('DOMAIN_VERIFY_MAIL_FROM', 'noreply@example.localhost'),
+        'subject' => env('DOMAIN_VERIFY_MAIL_SUBJECT', 'Domain Verification'),
+        'view' => env('DOMAIN_VERIFY_MAIL_VIEW', 'laravel-domain-verify::mail'),
     ],
 
-    'activation_route' => env('DOMAIN_VERIFY_ACTIVATION_ROUTE', 'domain-verify.activated'),
+    'page' => [
+        'verification_succeeded' => env(
+            'DOMAIN_VERIFY_VERIFICATION_SUCCEEDED_VIEW',
+            'laravel-domain-verify::verification_succeeded'
+        ),
+        'verification_failed' => env(
+            'DOMAIN_VERIFY_VERIFICATION_FAILED_VIEW',
+            'laravel-domain-verify::verification_failed'
+        ),
+    ],
 ];

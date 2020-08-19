@@ -4,10 +4,10 @@ namespace SunAsterisk\DomainVerifier\Tests\Strategies;
 
 use Mockery;
 use SunAsterisk\DomainVerifier\Tests\TestCase;
-use SunAsterisk\DomainVerifier\Strategies\DNSRecord;
+use SunAsterisk\DomainVerifier\Strategies\HTMLMeta;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
-class DNSRecordTest extends StrategyTestCase
+class HTMLMetaTest extends StrategyTestCase
 {
     protected $verifier;
     protected $url;
@@ -19,7 +19,7 @@ class DNSRecordTest extends StrategyTestCase
 
         $this->url = 'https://domain.local';
 
-        $this->token = (new DNSRecord())->getToken($this->url, $this->verifiable);
+        $this->token = (new HTMLMeta())->getToken($this->url, $this->verifiable);
     }
 
     public function testItCanCheckValidToken()
@@ -39,10 +39,10 @@ class DNSRecordTest extends StrategyTestCase
 
     protected function verifyWith(string $token): VerifyResult
     {
-        $this->verifier = Mockery::mock(DNSRecord::class)
+        $this->verifier = Mockery::mock(HTMLMeta::class)
             ->makePartial()
             ->shouldAllowMockingProtectedMethods()
-            ->allows(['getTxtRecordValues' => [self::VERIFICATION_NAME . '=' . $token]]);
+            ->allows(['getMetaTags' => [self::VERIFICATION_NAME => $token]]);
 
         return $this->verifier->verify($this->url, $this->verifiable);
     }

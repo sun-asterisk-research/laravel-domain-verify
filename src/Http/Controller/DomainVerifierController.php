@@ -2,20 +2,50 @@
 
 namespace SunAsterisk\DomainVerifier\Http\Controller;
 
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
+use SunAsterisk\DomainVerifier\VerifierFactoryFacade as VerifierFactory;
+use SunAsterisk\DomainVerifier\Models\DomainVerification;
 
-class DomainVerifierController extends BaseController
+class DomainVerifierController extends Controller
 {
-    public function verify($token)
+    public function getHtmlFile($id)
     {
-        DomainVerificationFacade::setVerifiedByToken($token);
-        $route =  config('domain_verifier.activation_route');
-        return route($route);
+        $domainVerification = DomainVerification::findOrFail($id);
+        $verificationName = config('domain_verifier.verification_name');
+        $fileName = "$verificationName.html";
+
+        $content = $domainVerification->token;
+
+        $headers = [
+            'Content-type' => 'text/plain',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $fileName),
+            'Content-Length' => strlen($content),
+        ];
+
+        return response()->make($content, 200, $headers);
     }
 
-    public function activated()
+    public function verify($token)
     {
-        return view('domain-verifier::activated');
+        $viewSucceeded = config('domain_verifier.page.verification_succeeded');
+        $viewFailed = config('domain_verifier.page.verification_failed');
+
+        $verifier = VerifierFactory::strategy('sending-mail');
+        try {
+            $result = $verifier->verifyByActivationToken($token);
+
+            if ($result->isVerified()) {
+                $verifiable = $result->getVerifiable();
+                $record = $result->getRecord();
+                $verifiable->onVerificationSuccessByMail($record);
+
+                return view($viewSucceeded);
+            } else {
+                return view($viewFailed);
+            }
+        } catch (\Exception $exception) {
+            return view($viewFailed);
+        }
     }
 }

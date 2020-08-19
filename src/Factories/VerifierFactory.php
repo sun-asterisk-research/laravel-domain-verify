@@ -6,7 +6,7 @@ use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
 use SunAsterisk\DomainVerifier\Strategies\DNSRecord;
 use SunAsterisk\DomainVerifier\Strategies\HTMLMeta;
 use SunAsterisk\DomainVerifier\Strategies\HTMLFile;
-use SunAsterisk\DomainVerifier\Strategies\Mail;
+use SunAsterisk\DomainVerifier\Strategies\SendingMail;
 
 class VerifierFactory
 {
@@ -22,8 +22,8 @@ class VerifierFactory
             case 'html-meta':
                 return new HTMLMeta();
                 break;
-            case 'mail':
-                return new Mail();
+            case 'sending-mail':
+                return new SendingMail();
                 break;
         }
 

@@ -8,6 +8,7 @@ use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
 use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerificationInterface;
 use SunAsterisk\DomainVerifier\Supports\URL;
 use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
+use Illuminate\Support\Str;
 
 class DomainVerification implements DomainVerificationInterface
 {
@@ -41,79 +42,23 @@ class DomainVerification implements DomainVerificationInterface
     {
         return DomainVerificationModel::firstOrCreate(
             [
+                'verifiable_type' => get_class($verifiable),
                 'verifiable_id' => $verifiable->getKey(),
                 'url' => $url,
             ],
             [
                 'status' => 'pending',
-                'token' => $this->hasher->make($this->generateToken()),
+                'token' => $this->generateToken(),
+                'activation_token' => $this->generateToken(),
             ]
         );
     }
 
     /** @inheritDoc */
-    public function getTokenFor(string $url, DomainVerifiableInterface $verifiable)
+    public function findByActivationToken(string $activationToken): ?DomainVerificationModel
     {
-        return $this->getTable()
-            ->where('url', URL::normalize($url))
-            ->where('verifiable_id', $verifiable->getKey())
+        return DomainVerificationModel::where('activation_token', $activationToken)
             ->first();
-    }
-
-    /** @inheritDoc */
-    public function getByToken(string $token)
-    {
-        return $this->getTable()
-            ->where('token', $token)
-            ->first();
-    }
-
-    /** @inheritDoc */
-    public function setVerified(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
-    {
-        $record = DomainVerificationModel::where('verifiable_id', $verifiable->getKey())
-            ->where('url', $url)
-            ->first();
-
-        $record->update([
-                'verified_at' => now(),
-                'status' => 'verified',
-            ]);
-
-        return $record;
-    }
-
-    /** @inheritDoc */
-    public function setVerifiedByToken(string $token)
-    {
-        $this->getTable()
-            ->where('token', $token)
-            ->update(['verified_at' => now()]);
-    }
-
-    /**
-     * Delete existing verifications
-     *
-     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface  $verifiable
-     * @param  string  $url
-     * @return void
-     */
-    protected function deleteExisting(DomainVerifiableInterface $verifiable, string $url)
-    {
-        $this->getTable()
-            ->where('verifiable_id', $verifiable->getKey())
-            ->where('url', $url)
-            ->delete();
-    }
-
-    /**
-     * Get table query
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    protected function getTable()
-    {
-        return $this->connection->table($this->table);
     }
 
     /**
@@ -123,6 +68,6 @@ class DomainVerification implements DomainVerificationInterface
      */
     protected function generateToken()
     {
-        return hash_hmac('sha256', str_random(48), $this->hashKey);
+        return hash_hmac('sha256', Str::random(48), $this->hashKey);
     }
 }
