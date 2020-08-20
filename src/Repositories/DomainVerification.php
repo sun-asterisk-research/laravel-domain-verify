@@ -40,10 +40,9 @@ class DomainVerification implements DomainVerificationInterface
 
     public function firstOrCreate(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
     {
-        return DomainVerificationModel::firstOrCreate(
+
+        return $verifiable->domainVerifications()->firstOrCreate(
             [
-                'verifiable_type' => get_class($verifiable),
-                'verifiable_id' => $verifiable->getKey(),
                 'url' => $url,
             ],
             [

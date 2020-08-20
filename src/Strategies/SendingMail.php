@@ -9,6 +9,7 @@ use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Supports\URL;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
 use SunAsterisk\DomainVerifier\Mail\ActivationMail;
+use Carbon\Carbon;
 
 class SendingMail extends BaseStrategy
 {
@@ -51,6 +52,8 @@ class SendingMail extends BaseStrategy
         Mail::send(
             new ActivationMail($domainVerifiable, $record, $url, $domainName, $record->activation_token, $emailTo)
         );
+
+        $record->update(['email_sent_at' => Carbon::now()]);
     }
 
     public function setVerified(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
