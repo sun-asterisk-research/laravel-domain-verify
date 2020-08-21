@@ -9,6 +9,7 @@
         "illuminate/database": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
         "illuminate/hashing": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
         "illuminate/support": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
+        "nesbot/carbon": "~1.0|~2.0",
         "spatie/dns": "^1.4"
     },
     "require-dev": {
