@@ -2,8 +2,8 @@
 
 namespace SunAsterisk\DomainVerifier\Tests\Supports;
 
-use SunAsterisk\DomainVerifier\Tests\TestCase;
 use SunAsterisk\DomainVerifier\Supports\URL;
+use SunAsterisk\DomainVerifier\Tests\TestCase;
 
 class URLTest extends TestCase
 {

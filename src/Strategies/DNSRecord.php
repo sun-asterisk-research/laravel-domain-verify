@@ -2,12 +2,10 @@
 
 namespace SunAsterisk\DomainVerifier\Strategies;
 
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
-use SunAsterisk\DomainVerifier\Models\DomainVerification;
-use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
+use Spatie\Dns\Dns;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
-use Spatie\Dns\Dns;
 
 class DNSRecord extends BaseStrategy
 {
@@ -15,10 +13,10 @@ class DNSRecord extends BaseStrategy
      * Verify domain ownership via TXT record
      *
      * @param string $url
-     * @param DomainVerifiableInterface $domainVerifiable
+     * @param DomainVerifiable $domainVerifiable
      * @return VerifyResult
      */
-    public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
+    public function verify(string $url, DomainVerifiable $domainVerifiable): VerifyResult
     {
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
 

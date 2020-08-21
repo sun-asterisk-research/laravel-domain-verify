@@ -3,9 +3,8 @@
 namespace SunAsterisk\DomainVerifier\Http\Controller;
 
 use Illuminate\Routing\Controller;
-use SunAsterisk\DomainVerifier\DomainVerificationFacade;
-use SunAsterisk\DomainVerifier\VerifierFactoryFacade as VerifierFactory;
 use SunAsterisk\DomainVerifier\Models\DomainVerification;
+use SunAsterisk\DomainVerifier\VerifierFactoryFacade as VerifierFactory;
 
 class DomainVerifierController extends Controller
 {
@@ -41,9 +40,9 @@ class DomainVerifierController extends Controller
                 $verifiable->onVerificationSuccessByMail($record);
 
                 return view($viewSucceeded);
-            } else {
-                return view($viewFailed);
             }
+
+            return view($viewFailed);
         } catch (\Exception $exception) {
             return view($viewFailed);
         }

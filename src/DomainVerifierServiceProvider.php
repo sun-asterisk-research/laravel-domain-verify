@@ -4,8 +4,8 @@ namespace SunAsterisk\DomainVerifier;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use SunAsterisk\DomainVerifier\Repositories\DomainVerification;
 use SunAsterisk\DomainVerifier\Factories\VerifierFactory;
+use SunAsterisk\DomainVerifier\Repositories\DomainVerification;
 
 class DomainVerifierServiceProvider extends ServiceProvider
 {
@@ -47,6 +47,7 @@ class DomainVerifierServiceProvider extends ServiceProvider
             $table = 'domain_verifications';
             $hasher = $app->make('hash');
             $hashKey = $app->make('config')->get('app.key');
+
             return new DomainVerification($connection, $table, $hasher, $hashKey);
         });
 

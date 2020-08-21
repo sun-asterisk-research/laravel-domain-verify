@@ -2,27 +2,28 @@
 
 namespace SunAsterisk\DomainVerifier\Strategies;
 
-use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
+use SunAsterisk\DomainVerifier\Contracts\Strategies\VerifierStrategy;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
-use SunAsterisk\DomainVerifier\Results\VerifyResult;
 use SunAsterisk\DomainVerifier\Models\DomainVerification;
+use SunAsterisk\DomainVerifier\Results\VerifyResult;
 use SunAsterisk\DomainVerifier\Supports\URL;
 
-abstract class BaseStrategy implements StrategyInterface
+abstract class BaseStrategy implements VerifierStrategy
 {
-    abstract public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult;
+    abstract public function verify(string $url, DomainVerifiable $domainVerifiable): VerifyResult;
 
     /**
      * Get token for verification process
      *
      * @param  string  $url
-     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @param  DomainVerifiable  $domainVerifiable
      * @return string
      */
-    public function getToken(string $url, DomainVerifiableInterface $domainVerifiable): string
+    public function getToken(string $url, DomainVerifiable $domainVerifiable): string
     {
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+
         return $record->token;
     }
 
@@ -31,9 +32,10 @@ abstract class BaseStrategy implements StrategyInterface
         return URL::getDomainName($url);
     }
 
-    public function getRecord(string $url, DomainVerifiableInterface $domainVerifiable): DomainVerification
+    public function getRecord(string $url, DomainVerifiable $domainVerifiable): DomainVerification
     {
         $record = DomainVerificationFacade::firstOrCreate($url, $domainVerifiable);
+
         return $record->token;
     }
 }

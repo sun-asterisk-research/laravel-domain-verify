@@ -10,9 +10,4 @@ trait DomainVerifiable
     {
         return $this->morphMany(DomainVerification::class, 'verifiable');
     }
-
-    public function onVerificationSuccessByMail(DomainVerification $record)
-    {
-        return;
-    }
 }

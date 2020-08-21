@@ -4,13 +4,12 @@ namespace SunAsterisk\DomainVerifier\Repositories;
 
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Database\ConnectionInterface;
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
-use SunAsterisk\DomainVerifier\Contracts\Repositories\DomainVerificationInterface;
-use SunAsterisk\DomainVerifier\Supports\URL;
-use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
 use Illuminate\Support\Str;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
+use SunAsterisk\DomainVerifier\Contracts\Repositories\VerificationRepository;
+use SunAsterisk\DomainVerifier\Models\DomainVerification as DomainVerificationModel;
 
-class DomainVerification implements DomainVerificationInterface
+class DomainVerification implements VerificationRepository
 {
     /** @var \Illuminate\Database\ConnectionInterface */
     protected $connection;
@@ -24,12 +23,6 @@ class DomainVerification implements DomainVerificationInterface
     /** @var string */
     protected $hashKey;
 
-    /**
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  string  $table
-     * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
-     * @param  string  $hashKey
-     */
     public function __construct(ConnectionInterface $connection, string $table, Hasher $hasher, string $hashKey)
     {
         $this->connection = $connection;
@@ -38,13 +31,17 @@ class DomainVerification implements DomainVerificationInterface
         $this->hashKey = $hashKey;
     }
 
-    public function firstOrCreate(string $url, DomainVerifiableInterface $verifiable): DomainVerificationModel
+    /**
+     * Undocumented function
+     *
+     * @param  string $url
+     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable $verifiable
+     * @return \SunAsterisk\DomainVerifier\Models\DomainVerification
+     */
+    public function firstOrCreate(string $url, DomainVerifiable $verifiable): DomainVerificationModel
     {
-
         return $verifiable->domainVerifications()->firstOrCreate(
-            [
-                'url' => $url,
-            ],
+            ['url' => $url],
             [
                 'status' => 'pending',
                 'token' => $this->generateToken(),
@@ -53,11 +50,9 @@ class DomainVerification implements DomainVerificationInterface
         );
     }
 
-    /** @inheritDoc */
     public function findByActivationToken(string $activationToken): ?DomainVerificationModel
     {
-        return DomainVerificationModel::where('activation_token', $activationToken)
-            ->first();
+        return DomainVerificationModel::where('activation_token', $activationToken)->first();
     }
 
     /**

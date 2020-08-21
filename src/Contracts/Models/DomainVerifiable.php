@@ -2,9 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Contracts\Models;
 
-use SunAsterisk\DomainVerifier\Models\DomainVerification;
-
-interface DomainVerifiableInterface
+interface DomainVerifiable
 {
     /**
      * Get unique key of domain verifiable
@@ -17,10 +15,4 @@ interface DomainVerifiableInterface
      *
      */
     public function domainVerifications();
-
-    /**
-     * Method that get called on verification success
-     *
-     */
-    public function onVerificationSuccessByMail(DomainVerification $record);
 }

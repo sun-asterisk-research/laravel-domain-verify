@@ -3,9 +3,8 @@
 namespace SunAsterisk\DomainVerifier\Tests\Strategies;
 
 use Mockery;
-use SunAsterisk\DomainVerifier\Tests\TestCase;
-use SunAsterisk\DomainVerifier\Strategies\HTMLFile;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
+use SunAsterisk\DomainVerifier\Strategies\HTMLFile;
 
 class HTMLFileTest extends StrategyTestCase
 {

@@ -3,7 +3,7 @@
 namespace SunAsterisk\DomainVerifier\Mail;
 
 use Illuminate\Mail\Mailable;
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
 use SunAsterisk\DomainVerifier\Models\DomainVerification;
 
 class ActivationMail extends Mailable
@@ -18,8 +18,18 @@ class ActivationMail extends Mailable
 
     public $emailTo;
 
+    /**
+     * Constructor
+     *
+     * @param  \SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable $verifiable
+     * @param  \SunAsterisk\DomainVerifier\Models\DomainVerification $verification
+     * @param  string $url
+     * @param  string $domainName
+     * @param  string $activationToken
+     * @param  string $emailTo
+     */
     public function __construct(
-        DomainVerifiableInterface $verifiable,
+        DomainVerifiable $verifiable,
         DomainVerification $verification,
         string $url,
         string $domainName,
@@ -37,12 +47,12 @@ class ActivationMail extends Mailable
     public function build()
     {
         $mailFrom = config('domain_verifier.mail.from');
-        $mailTo = $this->emailTo . '@' . $this->domainName;
+        $mailTo = $this->emailTo.'@'.$this->domainName;
         $mailSubject = config('domain_verifier.mail.subject');
         $mailView = config('domain_verifier.mail.view');
         $baseUrl = config('domain_verifier.base_url');
 
-        $activationUrl = $baseUrl . '/domain-verify/activate/' . $this->activationToken;
+        $activationUrl = $baseUrl.'/domain-verify/activate/'.$this->activationToken;
 
         return $this
             ->from($mailFrom)

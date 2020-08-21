@@ -3,9 +3,8 @@
 namespace SunAsterisk\DomainVerifier\Tests\Strategies;
 
 use Mockery;
-use SunAsterisk\DomainVerifier\Tests\TestCase;
-use SunAsterisk\DomainVerifier\Strategies\HTMLMeta;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
+use SunAsterisk\DomainVerifier\Strategies\HTMLMeta;
 
 class HTMLMetaTest extends StrategyTestCase
 {

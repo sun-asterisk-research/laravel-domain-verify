@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="LaravelDomainVerifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <file>app</file>
+    <file>config</file>
+    <file>database</file>
+    <file>resources</file>
+    <file>routes</file>
+    <file>tests</file>
+
+    <exclude-pattern>vendor/</exclude-pattern>
+
+    <rule ref="SunAsteriskLaravel"/>
+
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable">
+        <exclude-pattern>database/factories</exclude-pattern>
+    </rule>
+</ruleset>

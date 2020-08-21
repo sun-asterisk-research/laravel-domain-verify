@@ -3,9 +3,8 @@
 namespace SunAsterisk\DomainVerifier\Tests\Strategies;
 
 use Mockery;
-use SunAsterisk\DomainVerifier\Tests\TestCase;
-use SunAsterisk\DomainVerifier\Strategies\DNSRecord;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
+use SunAsterisk\DomainVerifier\Strategies\DNSRecord;
 
 class DNSRecordTest extends StrategyTestCase
 {
@@ -42,7 +41,7 @@ class DNSRecordTest extends StrategyTestCase
         $this->verifier = Mockery::mock(DNSRecord::class)
             ->makePartial()
             ->shouldAllowMockingProtectedMethods()
-            ->allows(['getTxtRecordValues' => [self::VERIFICATION_NAME . '=' . $token]]);
+            ->allows(['getTxtRecordValues' => [self::VERIFICATION_NAME.'='.$token]]);
 
         return $this->verifier->verify($this->url, $this->verifiable);
     }

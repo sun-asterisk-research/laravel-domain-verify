@@ -2,7 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Results;
 
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
 use SunAsterisk\DomainVerifier\Models\DomainVerification;
 
 class VerifyResult
@@ -11,7 +11,7 @@ class VerifyResult
     protected $url;
     protected $record;
 
-    public function __construct(?DomainVerifiableInterface $domainVerifiable, string $url, DomainVerification $record)
+    public function __construct(?DomainVerifiable $domainVerifiable, string $url, DomainVerification $record)
     {
         $this->domainVerifiable = $domainVerifiable;
         $this->url = $url;

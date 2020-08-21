@@ -2,9 +2,7 @@
 
 namespace SunAsterisk\DomainVerifier\Strategies;
 
-use Mockery as m;
-use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
-use SunAsterisk\DomainVerifier\Contracts\Strategies\StrategyInterface;
+use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiable;
 use SunAsterisk\DomainVerifier\DomainVerificationFacade;
 use SunAsterisk\DomainVerifier\Results\VerifyResult;
 
@@ -14,10 +12,10 @@ class HTMLMeta extends BaseStrategy
      * Verify domain ownership via HTML meta tag
      *
      * @param  string  $url
-     * @param  DomainVerifiableInterface  $domainVerifiable
+     * @param  DomainVerifiable  $domainVerifiable
      * @return VerifyResult
      */
-    public function verify(string $url, DomainVerifiableInterface $domainVerifiable): VerifyResult
+    public function verify(string $url, DomainVerifiable $domainVerifiable): VerifyResult
     {
         $metaTags = $this->getMetaTags($url);
         $domainToken = $this->getMetaTagToken($metaTags);
@@ -43,6 +41,7 @@ class HTMLMeta extends BaseStrategy
         if (!isset($metaTags[$verificationName])) {
             return '';
         }
+
         return $metaTags[$verificationName];
     }
 }

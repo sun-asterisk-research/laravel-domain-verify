@@ -3,8 +3,8 @@
 namespace SunAsterisk\DomainVerifier\Tests\Strategies;
 
 use Mockery;
-use SunAsterisk\DomainVerifier\Tests\TestCase;
 use SunAsterisk\DomainVerifier\Contracts\Models\DomainVerifiableInterface;
+use SunAsterisk\DomainVerifier\Tests\TestCase;
 
 class StrategyTestCase extends TestCase
 {
