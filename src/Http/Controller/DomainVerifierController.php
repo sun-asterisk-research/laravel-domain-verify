@@ -5,6 +5,7 @@ namespace SunAsterisk\DomainVerifier\Http\Controller;
 use Illuminate\Routing\Controller;
 use SunAsterisk\DomainVerifier\Models\DomainVerification;
 use SunAsterisk\DomainVerifier\VerifierFactoryFacade as VerifierFactory;
+use Illuminate\Support\Facades\Log;
 
 class DomainVerifierController extends Controller
 {
@@ -37,13 +38,13 @@ class DomainVerifierController extends Controller
             if ($result->isVerified()) {
                 $verifiable = $result->getVerifiable();
                 $record = $result->getRecord();
-                $verifiable->onVerificationSuccessByMail($record);
 
                 return view($viewSucceeded);
             }
 
             return view($viewFailed);
         } catch (\Exception $exception) {
+            Log::error($exception);
             return view($viewFailed);
         }
     }
