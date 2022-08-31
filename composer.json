@@ -4,11 +4,11 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": ">=7.1.3",
-        "illuminate/config": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
-        "illuminate/database": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
-        "illuminate/hashing": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
-        "illuminate/support": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0",
+        "php": "^7.3|^8.0",
+        "illuminate/config": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+        "illuminate/database": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+        "illuminate/hashing": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+        "illuminate/support": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "nesbot/carbon": "~1.0|~2.0",
         "spatie/dns": "^1.4"
     },
@@ -29,7 +29,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "prefer-stable": true,
     "extra": {

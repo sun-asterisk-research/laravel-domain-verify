@@ -4,8 +4,9 @@ composer.phar
 composer.lock
 
 # IDE/editors:
-/.idea
-/.vscode
+.idea
+.vscode
+.phpunit.result.cache
 
 # OS:
 .DS_Store
