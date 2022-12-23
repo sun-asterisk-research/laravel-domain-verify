@@ -4,13 +4,13 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "illuminate/config": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "illuminate/database": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "illuminate/hashing": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "illuminate/support": "~5.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "nesbot/carbon": "~1.0|~2.0",
-        "spatie/dns": "^1.4"
+        "spatie/dns": "^2.5"
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
