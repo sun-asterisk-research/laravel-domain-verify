@@ -37,4 +37,9 @@ class VerifyResult
     {
         return $this->record->status;
     }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }
